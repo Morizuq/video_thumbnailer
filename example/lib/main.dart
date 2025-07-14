@@ -62,14 +62,14 @@ class _MyAppState extends State<MyApp> {
 
       final path = await VideoThumbnailer.generateThumbnail(
         videoPath: videoPath,
-        time: 1000, // 1 second into the video
+        time: 1000, // 10 second into the video
         quality: 75,
         format: ImageFormat.jpeg, // JPEG
       );
 
       final bytes = await VideoThumbnailer.generateThumbnailData(
         videoPath: videoPath,
-        time: 1000,
+        time: 10000,
       );
 
       setState(() {
@@ -83,36 +83,42 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Video thumbnailer example')),
+        appBar: AppBar(
+          title: const Text('Video thumbnailer example'),
+          centerTitle: true,
+          scrolledUnderElevation: 0,
+        ),
         body: Padding(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Text('Platform Version: $_platformVersion'),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: pickVideoAndGenerateThumbnail,
-                child: const Text('Pick Video & Generate Thumbnail'),
-              ),
-              const SizedBox(height: 20),
-              if (_thumbnailBytes != null)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Thumbnail from Memory:'),
-                    Image.memory(_thumbnailBytes!),
-                  ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text('Platform Version: $_platformVersion'),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: pickVideoAndGenerateThumbnail,
+                  child: const Text('Pick Video & Generate Thumbnail'),
                 ),
-              const SizedBox(height: 20),
-              if (_thumbnailPath != null)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Thumbnail from File:'),
-                    Image.file(File(_thumbnailPath!)),
-                  ],
-                ),
-            ],
+                const SizedBox(height: 20),
+                if (_thumbnailBytes != null)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Thumbnail from Memory:'),
+                      Image.memory(_thumbnailBytes!),
+                    ],
+                  ),
+                const SizedBox(height: 20),
+                if (_thumbnailPath != null)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Thumbnail from File:'),
+                      Image.file(File(_thumbnailPath!)),
+                    ],
+                  ),
+              ],
+            ),
           ),
         ),
       ),

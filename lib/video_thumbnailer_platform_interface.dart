@@ -33,7 +33,7 @@ abstract class VideoThumbnailerPlatform extends PlatformInterface {
     required String videoPath,
     String? thumbnailPath,
     int time = 0,
-    int format = 0,
+    String format = 'jpeg',
     int maxWidth = 0,
     int maxHeight = 0,
     int quality = 75,
@@ -44,7 +44,7 @@ abstract class VideoThumbnailerPlatform extends PlatformInterface {
   Future<Uint8List?> generateThumbnailData({
     required String videoPath,
     int time = 0,
-    int format = 0,
+    String format = 'jpeg',
     int maxWidth = 0,
     int maxHeight = 0,
     int quality = 75,

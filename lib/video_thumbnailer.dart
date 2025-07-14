@@ -7,6 +7,19 @@ import 'video_thumbnailer_platform_interface.dart';
 
 enum ImageFormat { jpeg, png, webp }
 
+extension ImageFormatExtension on ImageFormat {
+  String get name {
+    switch (this) {
+      case ImageFormat.jpeg:
+        return 'jpeg';
+      case ImageFormat.png:
+        return 'png';
+      case ImageFormat.webp:
+        return 'webp';
+    }
+  }
+}
+
 /// A utility class for generating video thumbnails in various formats.
 ///
 /// Provides methods to generate thumbnails as file paths, raw byte data,
@@ -39,7 +52,7 @@ class VideoThumbnailer {
       videoPath: videoPath,
       thumbnailPath: thumbnailPath,
       time: time,
-      format: format.index,
+      format: format.name,
       maxWidth: maxWidth,
       maxHeight: maxHeight,
       quality: quality,
@@ -57,7 +70,7 @@ class VideoThumbnailer {
     return VideoThumbnailerPlatform.instance.generateThumbnailData(
       videoPath: videoPath,
       time: time,
-      format: format.index,
+      format: format.name,
       maxWidth: maxWidth,
       maxHeight: maxHeight,
       quality: quality,

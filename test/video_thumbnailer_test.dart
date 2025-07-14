@@ -17,25 +17,23 @@ class MockVideoThumbnailerPlatform
     required String videoPath,
     String? thumbnailPath,
     int time = 0,
-    int format = 0,
+    String format = 'jpeg',
     int maxWidth = 0,
     int maxHeight = 0,
     int quality = 75,
-  }) async 
-    => thumbnailPath ?? '/mock/path/${videoPath.split('/').last}_thumb.jpg';
-  
+  }) async =>
+      thumbnailPath ?? '/mock/path/${videoPath.split('/').last}_thumb.jpg';
 
   @override
   Future<Uint8List?> generateThumbnailData({
     required String videoPath,
     int time = 0,
-    int format = 0,
+    String format = 'jpeg',
     int maxWidth = 0,
     int maxHeight = 0,
     int quality = 75,
-  }) async => Uint8List.fromList(
-        List<int>.generate(100, (index) => index % 256),
-      );
+  }) async =>
+      Uint8List.fromList(List<int>.generate(100, (index) => index % 256));
 }
 
 void main() {

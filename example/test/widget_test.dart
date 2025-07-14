@@ -11,17 +11,27 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:video_thumbnailer_example/main.dart';
 
 void main() {
-  testWidgets('Verify Platform version', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Verify Platform Version text appears', (
+    WidgetTester tester,
+  ) async {
+    // Build the app and trigger a frame.
     await tester.pumpWidget(const MyApp());
 
-    // Verify that platform version is retrieved.
+    // Allow time for async operations like platform version fetching
+    await tester.pumpAndSettle();
+
+    // Verify that the platform version text is shown
     expect(
       find.byWidgetPredicate(
-        (Widget widget) => widget is Text &&
-                           widget.data!.startsWith('Running on:'),
+        (widget) =>
+            widget is Text &&
+            widget.data != null &&
+            widget.data!.startsWith('Platform Version:'),
       ),
       findsOneWidget,
     );
+
+    // Verify the presence of the button
+    expect(find.text('Pick Video & Generate Thumbnail'), findsOneWidget);
   });
 }

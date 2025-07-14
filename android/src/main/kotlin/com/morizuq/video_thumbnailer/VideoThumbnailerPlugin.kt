@@ -34,8 +34,8 @@ class VideoThumbnailerPlugin: FlutterPlugin, MethodCallHandler {
 
       "generateThumbnailFile" -> {
         val videoPath = call.argument<String>("videoPath")
-        val timeMs = call.argument<Int>("timeMs ") ?: 0 // In milliseconds
-        val format = call.argument<String>("format") ?: "jpeg"
+        val timeMs = call.argument<Int>("timeMs") ?: 0 // In milliseconds
+        val formatStr = call.argument<String>("format") ?: "jpeg"
         val maxWidth = call.argument<Int>("maxWidth") ?: 0
         val maxHeight = call.argument<Int>("maxHeight") ?: 0
         val quality = call.argument<Int>("quality") ?: 75
@@ -129,8 +129,8 @@ class VideoThumbnailerPlugin: FlutterPlugin, MethodCallHandler {
         val height = bitmap.height
         val aspectRatio = width.toFloat() / height
 
-        val newWidth = width
-        val newHeight = height
+        var newWidth = width
+        var newHeight = height
 
       
         if (maxWidth > 0 && width > maxWidth) {
