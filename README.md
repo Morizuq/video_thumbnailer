@@ -41,7 +41,7 @@ void generate() async {
   final thumbnailPath = await VideoThumbnailer.generateThumbnail(
     videoPath: '/path/to/video.mp4',
     time: 1000, // in milliseconds
-    format: 0, // JPEG
+    format: 'jpeg', // JPEG
     quality: 75,
     maxWidth: 320,
     maxHeight: 240,
@@ -50,7 +50,7 @@ void generate() async {
   final thumbnailData = await VideoThumbnailer.generateThumbnailData(
     videoPath: '/path/to/video.mp4',
     time: 500,
-    format: 0,
+    format: 'jpeg',
   );
 }
 ```
