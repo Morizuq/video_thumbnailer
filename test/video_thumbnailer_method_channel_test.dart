@@ -53,7 +53,7 @@ void main() {
     final String? thumbnailPath = await platform.generateThumbnail(
       videoPath: videoPath,
       time: 1000,
-      format: 0, // Assuming 0 corresponds to JPEG
+      format: 'jpeg', // Assuming 0 corresponds to JPEG
       maxWidth: 320,
       maxHeight: 240,
       quality: 80,
@@ -67,7 +67,7 @@ void main() {
     final Uint8List? thumbnailData = await platform.generateThumbnailData(
       videoPath: videoPath,
       time: 1000,
-      format: 0, // Assuming 0 corresponds to JPEG
+      format: 'jpeg', // Assuming 0 corresponds to JPEG
       maxWidth: 320,
       maxHeight: 240,
       quality: 80,

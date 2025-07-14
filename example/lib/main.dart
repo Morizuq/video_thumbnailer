@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -19,6 +22,9 @@ class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   final _videoThumbnailerPlugin = VideoThumbnailer();
 
+  String? _thumbnailPath;
+  Uint8List? _thumbnailBytes;
+
   @override
   void initState() {
     super.initState();
@@ -32,7 +38,8 @@ class _MyAppState extends State<MyApp> {
     // We also handle the message potentially returning null.
     try {
       platformVersion =
-          await _videoThumbnailerPlugin.getPlatformVersion() ?? 'Unknown platform version';
+          await _videoThumbnailerPlugin.getPlatformVersion() ??
+          'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -47,15 +54,72 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Future<void> pickVideoAndGenerateThumbnail() async {
+    final result = await FilePicker.platform.pickFiles(type: FileType.video);
+
+    if (result != null && result.files.single.path != null) {
+      final videoPath = result.files.single.path!;
+
+      final path = await VideoThumbnailer.generateThumbnail(
+        videoPath: videoPath,
+        time: 1000, // 10 second into the video
+        quality: 75,
+        format: ImageFormat.jpeg, // JPEG
+      );
+
+      final bytes = await VideoThumbnailer.generateThumbnailData(
+        videoPath: videoPath,
+        time: 10000,
+      );
+
+      setState(() {
+        _thumbnailPath = path;
+        _thumbnailBytes = bytes;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('Video thumbnailer example'),
+          centerTitle: true,
+          scrolledUnderElevation: 0,
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text('Platform Version: $_platformVersion'),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: pickVideoAndGenerateThumbnail,
+                  child: const Text('Pick Video & Generate Thumbnail'),
+                ),
+                const SizedBox(height: 20),
+                if (_thumbnailBytes != null)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Thumbnail from Memory:'),
+                      Image.memory(_thumbnailBytes!),
+                    ],
+                  ),
+                const SizedBox(height: 20),
+                if (_thumbnailPath != null)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Thumbnail from File:'),
+                      Image.file(File(_thumbnailPath!)),
+                    ],
+                  ),
+              ],
+            ),
+          ),
         ),
       ),
     );
